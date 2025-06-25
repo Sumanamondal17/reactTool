@@ -4,6 +4,7 @@ import { URL } from './constants'
 import RecentSearch from './components/RecentSearch'
 import QuesAnsBody from './components/QuesAnsBody'
 
+
 function App() {
   const[question,setQuestion]=useState('');
   const[result,setResult]=useState([]);
@@ -11,6 +12,7 @@ function App() {
   const [selectedHtry,setSelectedhtry]=useState('')
   const scrollToAns=useRef();
   const [loading,setLoading]=useState(false)
+  const [isOpen,setIsOpen]=useState(false)
 
  
   const askQuestion= async()=>{
@@ -83,18 +85,37 @@ function App() {
 
     }
   },[darkMode])
+  
+  
 
 
   return (
-    <div className={darkMode=='dark'?'dark':'light'}>
-   <div className='grid grid-cols-5 h-screen text-center '>
-    <select onClick={(event)=>{setDarkMode(event.target.value)}} className='fixed dark:text-zinc-300 text-zinc-900 right-0 p-5 outline-none cursor-pointer'>
-      <option  value="dark">Dark</option>
-      <option  value="light">Light</option>
-    </select>
-    <RecentSearch recentHtry={recentHtry} setRecenthtry={setRecenthtry} setSelectedhtry={setSelectedhtry}/>
-    <div  className='col-span-4 p-5'>
-      <h1 className='text-4xl pb-5 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-violet-500'>Welcome User! Ask Me Anything...</h1>
+  <div className={darkMode=='dark'?'dark':'light'}>
+   <div className='grid grid-cols-5 h-screen text-center'>
+      <select onClick={(event)=>{setDarkMode(event.target.value)}} className='fixed top-2 rounded dark:text-zinc-300 dark:bg-zinc-700 bg-indigo-300 text-zinc-900 right-2 p-2 outline-none cursor-pointer'>
+        <option  value="dark">Dark</option>
+        <option  value="light">Light</option>
+      </select>
+      <div className='dark:bg-zinc-800 bg-indigo-200 p-4 pt-4  hidden sm:block sm:col-span-1 h-screen'>
+        <RecentSearch  recentHtry={recentHtry} setRecenthtry={setRecenthtry} setSelectedhtry={setSelectedhtry}/>
+      </div>
+    
+    
+    <div  className='col-span-5 sm:col-span-4 p-5'>
+    <div className='' >
+        <button onClick={()=>setIsOpen(!isOpen)} className="sm:hidden left-2 top-2 fixed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#666666"><path d="M160-200v-440 440-15 15Zm0 80q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v171q-18-13-38-22.5T800-508v-132H160v440h283q3 21 9 41t15 39H160Zm240-600h160v-80H400v80ZM720-40q-83 0-141.5-58.5T520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 83-58.5 141.5T720-40Zm20-208v-112h-40v128l86 86 28-28-74-74Z"/></svg>
+        </button>
+        {
+          isOpen && (
+            <div className="dark:bg-zinc-800 bg-indigo-200 p-4 pt-4">
+            <RecentSearch  recentHtry={recentHtry} setRecenthtry={setRecenthtry} setSelectedhtry={setSelectedhtry}/>
+            </div>
+          )
+        }       
+      </div>
+    
+      <h1 className='pt-6 sm:pt-2 text-2xl sm:text-4xl pb-5 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-violet-500'>Hello! Ask Me Anything...</h1>
       {
         loading?
         <div role="status">
@@ -117,7 +138,7 @@ function App() {
           </ul>
         </div>
       </div>
-      <div className='dark:bg-zinc-800 bg-indigo-200 w-1/2 dark:text-white text-zinc-800 m-auto rounded-4xl p-1 pr-3 border border-zinc-400 flex h-12'>
+      <div className='dark:bg-zinc-800 bg-indigo-200 w-full sm:w-1/3 dark:text-white text-zinc-800 m-auto rounded-4xl p-1 pr-3 border border-zinc-400 flex h-12'>
         <input type="text" value={question}
         onKeyDown={isEnter}
         onChange={(event)=>setQuestion(event.target.value)} className='w-full h-full p-3 outline-none' placeholder='Tell me what you want'/>
